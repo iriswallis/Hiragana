@@ -1,161 +1,133 @@
-
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hiragana-harjoittelu</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      text-align: center;
-      background: #f5f5f5;
-      color: #222;
-    }
-
-    h1 { font-size: 28px; }
-
-    select, button {
-      padding: 12px;
-      margin: 6px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .kana {
-      font-size: 100px;
-      margin: 25px 0;
-    }
-
-    .answers {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .answers button {
-      background: white;
-      border: 1px solid #aaa;
-      border-radius: 8px;
-    }
-
-    button:hover { background: #e5e5e5; }
-
-    #feedback {
-      min-height: 28px;
-      font-weight: bold;
-    }
-
-    #next {
-      background: #222;
-      color: white;
-      border: none;
-      border-radius: 8px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hiragana</title>
+<style>
+:root{--bg:#eceff5;--panel:#fbfbfd;--ink:#1a1f36;--mut:#59617c;--line:#ccd2e1;--acc:#34459a;--red:#c8372d;--ok:#2f7d4f;--okbg:#dff0e5;--badbg:#f6dcd9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121528;--panel:#1b2038;--ink:#e9ecf8;--mut:#9aa3c4;--line:#2e3555;--acc:#9fb0ff;--red:#f08a80;--ok:#7ccf9c;--okbg:#17372a;--badbg:#42221f}}
+:root[data-theme="dark"]{--bg:#121528;--panel:#1b2038;--ink:#e9ecf8;--mut:#9aa3c4;--line:#2e3555;--acc:#9fb0ff;--red:#f08a80;--ok:#7ccf9c;--okbg:#17372a;--badbg:#42221f}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+h1{font:600 22px/1.2 Georgia,"Times New Roman",serif;margin:8px 0 14px}
+nav{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:14px}
+nav button{flex:1;background:none;border:0;padding:10px 4px;font:inherit;color:var(--mut);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+nav button[aria-selected=true]{color:var(--ink);border-color:var(--red);font-weight:600}
+button:focus-visible,select:focus-visible,.card:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.bar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px;color:var(--mut);font-size:14px}
+select{font:inherit;padding:6px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.prog i{display:block;height:100%;background:var(--ok);transition:width .3s}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;cursor:pointer;user-select:none}
+.jp{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP","Noto Serif CJK JP",serif}
+.big{font-size:120px;line-height:1.1}
+.snd{font:600 64px/1.1 Georgia,serif;color:var(--acc)}
+.tag{font-size:13px;color:var(--red);margin-top:10px;min-height:20px}
+.hint{color:var(--mut);margin:10px 0 0;max-width:34ch}
+.ex{margin-top:12px;font-size:18px}
+.ex b{font-weight:400;font-size:30px}
+.sp{background:none;border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:2px 10px;margin-left:6px;cursor:pointer;font-size:15px}
+.row{display:flex;gap:10px;margin-top:14px}
+.row button,.go{flex:1;padding:14px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+.row .yes{background:var(--ok);border-color:var(--ok);color:#fff}
+.row .no{color:var(--red);border-color:var(--red)}
+.go{background:var(--acc);border-color:var(--acc);color:var(--bg);width:100%;margin-top:14px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.opts button{padding:16px 8px;font:inherit;font-size:20px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.opts button.l{font-size:38px;padding:8px}
+.opts button.ok{background:var(--okbg);border-color:var(--ok)}
+.opts button.bad{background:var(--badbg);border-color:var(--red)}
+.q{min-height:210px}.q .big{font-size:96px}
+.fb{margin-top:12px;min-height:24px;color:var(--mut);text-align:center}
+.tr{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px}
+.t{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 2px;text-align:center;border-bottom-width:4px}
+.t.s0{border-bottom-color:var(--line)}.t.s1{border-bottom-color:#d9a441}.t.s2,.t.s3{border-bottom-color:var(--ok)}
+.t span{display:block;font-size:28px;line-height:1.3}.t small{color:var(--mut)}
+.t.tk small{color:var(--red)}
+.rl{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;line-height:1.6}.rl h3{font:600 16px/1.3 system-ui;margin:16px 0 4px}.rl h3:first-child{margin-top:0}.rl p{margin:0}
+.foot{margin-top:22px;text-align:center}
+.foot button{background:none;border:0;color:var(--mut);text-decoration:underline;cursor:pointer;font:inherit;font-size:14px}
+.key{color:var(--mut);font-size:13px;margin-top:10px;text-align:center}
+</style>
 </head>
 <body>
-  <h1>Hiragana-harjoittelu</h1>
-  <p>Valitse oikea romaji-vastine hiragana-merkille.</p>
-
-  <label for="level">Harjoittelutaso:</label>
-  <select id="level" onchange="resetGame()">
-    <option value="basic">Perusmerkit</option>
-    <option value="all">Kaikki perusmerkit</option>
-  </select>
-
-  <div class="kana" id="kana">あ</div>
-
-  <div class="answers" id="answers"></div>
-
-  <p id="feedback" aria-live="polite"></p>
-  <p>Oikein: <span id="score">0</span></p>
-  <p>Kysymyksiä: <span id="total">0</span></p>
-
-  <button id="next" onclick="nextQuestion()">Seuraava kysymys</button>
-
-  <script>
-    const basic = [
-      ["あ","a"], ["い","i"], ["う","u"], ["え","e"], ["お","o"],
-      ["か","ka"], ["き","ki"], ["く","ku"], ["け","ke"], ["こ","ko"],
-      ["さ","sa"], ["し","shi"], ["す","su"], ["せ","se"], ["そ","so"],
-      ["た","ta"], ["ち","chi"], ["つ","tsu"], ["て","te"], ["と","to"],
-      ["な","na"], ["に","ni"], ["ぬ","nu"], ["ね","ne"], ["の","no"],
-      ["は","ha"], ["ひ","hi"], ["ふ","fu"], ["へ","he"], ["ほ","ho"],
-      ["ま","ma"], ["み","mi"], ["む","mu"], ["め","me"], ["も","mo"],
-      ["や","ya"], ["ゆ","yu"], ["よ","yo"],
-      ["ら","ra"], ["り","ri"], ["る","ru"], ["れ","re"], ["ろ","ro"],
-      ["わ","wa"], ["を","wo"], ["ん","n"]
-    ];
-
-    let current;
-    let score = 0;
-    let total = 0;
-    let answered = false;
-
-    function getCharacters() {
-      return basic;
-    }
-
-    function resetGame() {
-      score = 0;
-      total = 0;
-      document.getElementById("score").textContent = score;
-      document.getElementById("total").textContent = total;
-      nextQuestion();
-    }
-
-    function nextQuestion() {
-      answered = false;
-      document.getElementById("feedback").textContent = "";
-
-      const chars = getCharacters();
-      current = chars[Math.floor(Math.random() * chars.length)];
-
-      document.getElementById("kana").textContent = current[0];
-
-      let options = [current[1]];
-
-      while (options.length < 4) {
-        const random = chars[Math.floor(Math.random() * chars.length)][1];
-        if (!options.includes(random)) options.push(random);
-      }
-
-      options.sort(() => Math.random() - 0.5);
-
-      const container = document.getElementById("answers");
-      container.innerHTML = "";
-
-      options.forEach(option => {
-        const button = document.createElement("button");
-        button.textContent = option;
-        button.onclick = () => checkAnswer(option);
-        container.appendChild(button);
-      });
-    }
-
-    function checkAnswer(answer) {
-      if (answered) return;
-      answered = true;
-      total++;
-
-      if (answer === current[1]) {
-        score++;
-        document.getElementById("feedback").textContent = "Oikein!";
-      } else {
-        document.getElementById("feedback").textContent =
-          "Väärin! Oikea vastaus on " + current[1] + ".";
-      }
-
-      document.getElementById("score").textContent = score;
-      document.getElementById("total").textContent = total;
-    }
-
-    nextQuestion();
-  </script>
+<div class="wrap">
+<h1>Hiragana</h1>
+<nav role="tablist"></nav>
+<div id="app"></div>
+<div class="foot"><button id="reset">Nollaa edistyminen</button></div>
+</div>
+<script>
+const RAW="a-rivi|あa いi うu えe おo;k-rivi|かka きki くku けke こko;s-rivi|さsa しshi すsu せse そso;t-rivi|たta ちchi つtsu てte とto;n-rivi|なna にni ぬnu ねne のno;h-rivi|はha ひhi ふfu へhe ほho;m-rivi|まma みmi むmu めme もmo;y-rivi|やya ゆyu よyo;r-rivi|らra りri るru れre ろro;w-rivi ja n|わwa をwo んn";
+// esimerkkisana: romaji=kana,romaji,suomennos
+const EX="a=あめ,ame,sade;i=いぬ,inu,koira;u=うみ,umi,meri;e=えき,eki,asema;o=おちゃ,ocha,tee;ka=かさ,kasa,sateenvarjo;ki=き,ki,puu;ku=くるま,kuruma,auto;ke=けしき,keshiki,maisema;ko=こえ,koe,ääni;sa=さかな,sakana,kala;shi=しろ,shiro,valkoinen;su=すし,sushi,sushi;se=せかい,sekai,maailma;so=そら,sora,taivas;ta=たまご,tamago,muna;chi=ちず,chizu,kartta;tsu=つき,tsuki,kuu;te=て,te,käsi;to=とり,tori,lintu;na=なつ,natsu,kesä;ni=にく,niku,liha;nu=ぬの,nuno,kangas;ne=ねこ,neko,kissa;no=のり,nori,merilevä;ha=はな,hana,kukka;hi=ひと,hito,ihminen;fu=ふね,fune,laiva;he=へや,heya,huone;ho=ほし,hoshi,tähti;ma=まど,mado,ikkuna;mi=みず,mizu,vesi;mu=むし,mushi,hyönteinen;me=め,me,silmä;mo=もり,mori,metsä;ya=やま,yama,vuori;yu=ゆき,yuki,lumi;yo=よる,yoru,yö;ra=らくだ,rakuda,kameli;ri=りんご,ringo,omena;ru=るす,rusu,poissa kotoa;re=れもん,remon,sitruuna;ro=ろうそく,rōsoku,kynttilä;wa=わに,wani,krokotiili;wo=みずを のむ,mizu o nomu,juon vettä;n=ほん,hon,kirja";
+const EX2="ga=がっこう,gakkō,koulu;gi=ぎんこう,ginkō,pankki;gu=ぐち,guchi,valitus;ge=げんき,genki,terve;go=ごはん,gohan,riisi;za=ざっし,zasshi,lehti;ji=じかん,jikan,aika;zu=ずっと,zutto,koko ajan;ze=ぜんぶ,zenbu,kaikki;zo=ぞう,zō,norsu;da=だいがく,daigaku,yliopisto;dji=はなぢ,hanaji,nenäverenvuoto;dzu=つづく,tsuzuku,jatkua;de=でんわ,denwa,puhelin;do=どうぶつ,dōbutsu,eläin;ba=ばら,bara,ruusu;bi=びじん,bijin,kaunis nainen;bu=ぶた,buta,sika;be=べんきょう,benkyō,opiskelu;bo=ぼうし,bōshi,hattu;pa=ぱん,pan,leipä;pi=ぴあの,piano,piano;pu=ぷりん,purin,vanukas;pe=ぺん,pen,kynä;po=ぽけっと,poketto,tasku;kya=きゃく,kyaku,vieras;kyu=きゅう,kyū,yhdeksän;kyo=きょう,kyō,tänään;sha=しゃしん,shashin,valokuva;shu=しゅみ,shumi,harrastus;sho=しょくじ,shokuji,ateria;cha=おちゃ,ocha,tee;chu=ちゅうい,chūi,huomio;cho=ちょうちょ,chōchō,perhonen;nya=こんにゃく,konnyaku,konjak;nyu=ぎゅうにゅう,gyūnyū,maito;nyo=にょうぼう,nyōbō,vaimo (vanh.);hya=ひゃく,hyaku,sata;hyu=ひゅう,hyū,suhahdus;hyo=ひょう,hyō,taulukko;mya=みゃく,myaku,pulssi;myu=みゅう,myū,miau;myo=みょうじ,myōji,sukunimi;rya=りゃく,ryaku,lyhenne;ryu=りゅう,ryū,lohikäärme;ryo=りょこう,ryokō,matka;gya=ぎゃく,gyaku,päinvastainen;gyu=ぎゅうにゅう,gyūnyū,maito;gyo=きんぎょ,kingyo,kultakala;ja=じゃがいも,jagaimo,peruna;ju=じゅうしょ,jūsho,osoite;jo=じょせい,josei,nainen;bya=さんびゃく,sanbyaku,kolmesataa;byu=びゅんびゅん,byunbyun,tuulen vinkuna;byo=びょういん,byōin,sairaala;pya=ろっぴゃく,roppyaku,kuusisataa;pyu=ぴゅうぴゅう,pyūpyū,vihellys;pyo=ぴょんぴょん,pyonpyon,hyppely";
+const RAW2="g-rivi|がga ぎgi ぐgu げge ごgo;z-rivi|ざza じji ずzu ぜze ぞzo;d-rivi|だda ぢdji づdzu でde どdo;b-rivi|ばba びbi ぶbu べbe ぼbo;p-rivi|ぱpa ぴpi ぷpu ぺpe ぽpo";
+const RAW3="ky-rivi|きゃkya きゅkyu きょkyo;sh-rivi|しゃsha しゅshu しょsho;ch-rivi|ちゃcha ちゅchu ちょcho;ny-rivi|にゃnya にゅnyu にょnyo;hy-rivi|ひゃhya ひゅhyu ひょhyo;my-rivi|みゃmya みゅmyu みょmyo;ry-rivi|りゃrya りゅryu りょryo;gy-rivi|ぎゃgya ぎゅgyu ぎょgyo;j-rivi|じゃja じゅju じょjo;by-rivi|びゃbya びゅbyu びょbyo;py-rivi|ぴゃpya ぴゅpyu ぴょpyo";
+const GRP=[["p","Perusmerkit"],["d","Äänteen muutokset"],["y","Yhdistelmät"]];
+const TH="さちぬめねれわるろはほ";
+const H={shi:"Äännetään ši (kuin suomen š + i).",chi:"Äännetään tši.",tsu:"Kuin suomen ts + u.",fu:"Ääni h:n ja f:n väliltä: puhalla huulten välistä.",wo:"Äännetään o. Käytössä lähinnä objektin partikkelina.",n:"Nenä-n. Voi kuulostaa m:ltä tai ng:ltä sanasta riippuen.",u:"Huulet rentoina, ei pyöristetä kuten suomen u:ssa.",dji:"Äännetään kuten じ (ji). Harvinainen: käytössä vain tietyissä sanoissa.",dzu:"Äännetään kuten ず (zu). Harvinainen: käytössä vain tietyissä sanoissa.",myu:"Harvinainen yhdistelmä, esiintyy lähinnä äänenomaisissa sanoissa."};
+const GH={d:"Perusmerkki + ten-ten (゛) tai maru (゜): ääni muuttuu soinnilliseksi (k→g, s→z, t→d, h→b) tai p:ksi.",y:"Iso merkki + pieni や, ゆ tai よ. Äännetään yhtenä tavuna: き + ゃ = kya."};
+const E={};(EX+";"+EX2).split(";").forEach(s=>{const[k,v]=s.split("=");E[k]=v.split(",")});
+const ROWS=[],D=[];
+[["p",RAW],["d",RAW2],["y",RAW3]].forEach(([g,raw])=>raw.split(";").forEach(r=>{const[n,its]=r.split("|");ROWS.push({n,g});its.split(" ").forEach(t=>{const m=t.match(/^[ぁ-ん]+/)[0];D.push({c:m,r:t.slice(m.length),row:n,g,tr:TH.includes(m)})})}));
+const KEY="hiragana-v1";
+let sc={},mode="cards",rf="all",flipped=false,cur=null,last="",dir="l2s",ans=false,streak=0,Q=null;
+try{sc=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){sc={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(sc))}catch(e){}}
+const $=s=>document.querySelector(s),app=$("#app");
+const pool=()=>D.filter(x=>rf==="all"||(rf==="tr"?x.tr:rf.startsWith("grp:")?x.g===rf.slice(4):x.row===rf));
+const S=x=>sc[x.c]||0;
+const hint=x=>H[x.r]||(x.g==="p"&&x.r[0]==="r"?"R on lähellä suomen l:ää ja r:ää: kielen kärki napauttaa nopeasti.":GH[x.g]||"");
+function pick(){const p=pool();let w=p.map(x=>x.c===last&&p.length>1?0:4-Math.min(S(x),3)),t=w.reduce((a,b)=>a+b,0),r=Math.random()*t;for(let j=0;j<p.length;j++){r-=w[j];if(r<=0){last=p[j].c;return p[j]}}last=p[0].c;return p[0]}
+function say(t){try{const u=new SpeechSynthesisUtterance(t);u.lang="ja-JP";u.rate=.8;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function setS(x,d){sc[x.c]=Math.max(0,Math.min(3,(sc[x.c]||0)+d));save()}
+function head(){const p=pool(),k=p.filter(x=>S(x)>=2).length;
+return `<div class="bar"><select id="rf" aria-label="Rajaa merkit"><option value="all">Kaikki merkit</option><option value="tr">Sekoittuvat</option>${GRP.map(([g,t])=>`<optgroup label="${t}"><option value="grp:${g}">Kaikki: ${t}</option>${ROWS.filter(r=>r.g===g).map(r=>`<option value="${r.n}">${r.n}</option>`).join("")}</optgroup>`).join("")}</select><span>Opittu ${k} / ${p.length}</span></div><div class="prog"><i style="width:${p.length?k/p.length*100:0}%"></i></div>`}
+function bindHead(){const b=$("#rf");b.value=rf;b.onchange=()=>{rf=b.value;cur=null;Q=null;render()}}
+function tabs(){const n=$("nav");n.innerHTML=[["cards","Kortit"],["quiz","Testi"],["table","Taulukko"],["rules","Säännöt"]].map(([m,t])=>`<button role="tab" data-m="${m}" aria-selected="${mode===m}">${t}</button>`).join("");n.querySelectorAll("button").forEach(b=>b.onclick=()=>{mode=b.dataset.m;cur=null;Q=null;flipped=false;ans=false;render()})}
+function render(){tabs();({cards,quiz,table,rules})[mode]()}
+function cards(){
+if(!cur)cur=pick();const x=cur,e=E[x.r]||["","",""];
+app.innerHTML=head()+`<div class="card" tabindex="0" id="c" role="button" aria-label="Käännä kortti">`+(flipped?
+`<div class="snd">${x.r}</div><p class="hint">${hint(x)}</p><div class="ex"><b class="jp">${e[0]}</b> ${e[1]} = ${e[2]}<button class="sp" id="sp">Kuuntele</button></div>`:
+`<div class="big jp">${x.c}</div><div class="tag">${x.tr?"Sekoittuu helposti":""}</div><p class="hint">Miten tämä äännetään?<br>Napauta korttia kääntääksesi.</p>`)+`</div>`+
+(flipped?`<div class="row"><button class="no" id="no">Harjoittele vielä</button><button class="yes" id="yes">Osasin</button></div>`:`<button class="go" id="fl">Käännä</button>`)+
+`<div class="key">Näppäimet: väli = käännä, ← vielä, → osasin</div>`;
+bindHead();
+const flip=()=>{flipped=true;render()};
+$("#c").onclick=e2=>{if(e2.target.id==="sp"){say(e[0]);return}if(!flipped)flip()};
+if(!flipped)$("#fl").onclick=flip;
+else{$("#sp").onclick=e2=>{e2.stopPropagation();say(e[0])};$("#no").onclick=()=>next(-3);$("#yes").onclick=()=>next(1)}}
+function next(d){setS(cur,d);cur=pick();flipped=false;render()}
+function mk(){const x=pick(),src=D.filter(y=>y.r!==x.r).sort(()=>Math.random()-.5),o=[x];
+for(const y of src){if(o.length>=4)break;o.push(y)}
+Q={x,o:o.sort(()=>Math.random()-.5)};ans=false}
+function quiz(){
+if(!Q)mk();const{x,o}=Q,l2s=dir==="l2s";
+app.innerHTML=head()+`<div class="bar"><span>Suunta:</span><select id="d"><option value="l2s">Merkki → ääni</option><option value="s2l">Ääni → merkki</option></select><span>Putki: ${streak}</span></div>`+
+`<div class="card q" style="cursor:default">${l2s?`<div class="big jp">${x.c}</div>`:`<div class="snd">${x.r}</div>`}<p class="hint">${l2s?"Mikä ääni tämä on?":"Mikä merkki tämä on?"}</p></div>`+
+`<div class="opts">${o.map((y,i)=>`<button data-i="${i}" class="${l2s?"":"l jp"}">${l2s?y.r:y.c}</button>`).join("")}</div><div class="fb" id="fb" aria-live="polite"></div><button class="go" id="nx" style="display:none">Seuraava</button>`;
+bindHead();$("#d").value=dir;$("#d").onchange=e=>{dir=e.target.value;mk();render()};
+const bs=app.querySelectorAll(".opts button");
+bs.forEach(b=>b.onclick=()=>{if(ans)return;ans=true;const y=o[+b.dataset.i],ok=y===x;
+if(ok){b.classList.add("ok");setS(x,1);streak++;$("#fb").textContent=`Oikein. ${x.c} = ${x.r}`}
+else{b.classList.add("bad");setS(x,-3);streak=0;bs.forEach((c,i)=>{if(o[i]===x)c.classList.add("ok")});$("#fb").textContent=`Oikea vastaus: ${x.c} = ${x.r}. ${hint(x)}`}
+say(x.c);$("#nx").style.display="block";$("#nx").focus();$("#nx").onclick=()=>{mk();render()}})}
+function table(){
+const p=pool();let h=`<p class="hint" style="max-width:none;margin:0 0 12px">Alareunan väri kertoo tilanteen: harmaa = uusi, keltainen = harjoittelussa, vihreä = osaat.</p>`;
+ROWS.forEach(({n:r})=>{const it=p.filter(x=>x.row===r);if(it.length)h+=`<div class="tr">${it.map(x=>`<div class="t s${S(x)} ${x.tr?"tk":""}"><span class="jp">${x.c}</span><small>${x.r}</small></div>`).join("")}</div>`});
+app.innerHTML=head()+h;bindHead()}
+function rules(){app.innerHTML=`<div class="rl"><h3>Ten-ten ja maru</h3><p>Kaksi pientä merkkiä muuttaa ääntä. Ten-ten (゛) tekee äänteestä soinnillisen (か → が, さ → ざ, た → だ, は → ば) ja maru (゜) tekee p-äänteen (は → ぱ).</p><h3>Pieni っ</h3><p>Pieni っ ei äänny itse, vaan kaksinkertaistaa seuraavan konsonantin, kuten suomen kaksois-k: <span class="jp">がっこう</span> gakkō (koulu), <span class="jp">ざっし</span> zasshi (lehti).</p><h3>Pitkät vokaalit</h3><p>Vokaali pitenee lisäämällä perään toinen vokaalimerkki: <span class="jp">おかあさん</span> okāsan (äiti). Pitkä o kirjoitetaan yleensä う: <span class="jp">どうぶつ</span> dōbutsu (eläin), ja pitkä e yleensä い: <span class="jp">せんせい</span> sensei (opettaja). Pituus voi muuttaa merkityksen: <span class="jp">おばさん</span> obasan (täti) ja <span class="jp">おばあさん</span> obāsan (isoäiti).</p><h3>Yhdistelmät</h3><p>き, し, ち, に, ひ, み, り ja niiden soinnilliset muodot yhdistyvät pieneen や, ゆ tai よ: き + ゃ = きゃ kya. Pieni merkki on näkyvästi pienempi kuin viereinen.</p></div>`}
+document.addEventListener("keydown",e=>{if(mode!=="cards"||(/SELECT|BUTTON/.test(e.target.tagName)&&e.key===" "))return;
+if(e.key===" "&&!flipped){e.preventDefault();flipped=true;render()}
+else if(flipped&&e.key==="ArrowLeft")next(-3);else if(flipped&&e.key==="ArrowRight")next(1)});
+$("#reset").onclick=()=>{if(confirm("Nollataanko kaikki edistyminen?")){sc={};save();streak=0;cur=null;Q=null;flipped=false;render()}};
+render();
+</script>
 </body>
 </html>
